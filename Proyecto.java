@@ -1,32 +1,44 @@
-import java.util.Scanner;
+
+
 public class Proyecto {
 
-    double subtotalPorKilo = peso * costoKilo;
-    double subtotalPorDocena = numDocenas * costoDocenas;
-    double subtotalPlanchadoExpress = piezasPlanchado * costoPlanchado;
-    double subtotalDelicados = piezasDelicadas * costoPzDelicada;
-    double subtotalEdredonCobija = numEdredonesCobijas * costoEdredonesCobijas;
+ static double costoKilo = 18.00;
+    static double costoDocenas = 90.00;
+    static double costoPlanchado = 10.00;
+    static double costoPzDelicada = 75.00;
+    static double costoEdredonesCobijas = 85.00;
 
-     double subtotalPorKiloAdi = pesoAdi * costoKilo;
+    static double calcularSubtotalInicial(double peso, int numDocenas, int piezasPlanchado, int piezasDelicadas, int numEdredonesCobijas) {
+        double subtotalPorKilo = peso * costoKilo;
+        double subtotalPorDocena = numDocenas * costoDocenas;
+        double subtotalPlanchadoExpress = piezasPlanchado * costoPlanchado;
+        double subtotalDelicados = piezasDelicadas * costoPzDelicada;
+        double subtotalEdredonCobija = numEdredonesCobijas * costoEdredonesCobijas;
+
+        return subtotalPorKilo + subtotalPorDocena + subtotalPlanchadoExpress + subtotalDelicados + subtotalEdredonCobija;
+    }
+
+    static double calcularSubtotalAdicional(double pesoAdi, int numDocenasAdi, int piezasPlanchadoAdi, int piezasDelicadasAdi, int numEdredonesCobijasAdi) {
+        double subtotalPorKiloAdi = pesoAdi * costoKilo;
         double subtotalPorDocenaAdi = numDocenasAdi * costoDocenas;
         double subtotalPlanchadoExpressAdi = piezasPlanchadoAdi * costoPlanchado;
         double subtotalDelicadosAdi = piezasDelicadasAdi * costoPzDelicada;
         double subtotalEdredonCobijaAdi = numEdredonesCobijasAdi * costoEdredonesCobijas;
 
-    double subtotal = subtotalPorKilo + subtotalPorDocena + subtotalPlanchadoExpress + subtotalDelicados + subtotalEdredonCobija + subtotalPorKiloAdi + subtotalPorDocenaAdi + subtotalPlanchadoExpressAdi + subtotalDelicadosAdi + subtotalEdredonCobijaAdi;
+        return subtotalPorKiloAdi + subtotalPorDocenaAdi + subtotalPlanchadoExpressAdi + subtotalDelicadosAdi + subtotalEdredonCobijaAdi;
+    }
 
-      boolean cupon = false;
+    static double calcularDescuento(double subtotal, boolean cupon) {
         double descuento = 0;
 
         if (cupon) {
             descuento = subtotal * 0.10;
         }
 
+        return descuento;
+    }
 
-        
-
-        double subtotalConDescuento = subtotal - descuento;
-
-     double iva = subtotalConDescuento * 0.16;
-        double totalFinal = subtotalConDescuento + iva;
- }
+    static double calcularIva(double subtotalConDescuento) {
+        return subtotalConDescuento * 0.16;
+    }
+}
