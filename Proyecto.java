@@ -24,7 +24,6 @@ public class Proyecto {
       }
       
       static void mostrarMenuNuevoPedido(String nombre, String telefono) {
-      System.out.println("-B U B B L E S O F T- | PEDIDO");
       System.out.println("Registro de Nuevo Pedido");
       System.out.println("DATOS DEL CLIENTE");
       System.out.println("Nombre: " + nombre);
