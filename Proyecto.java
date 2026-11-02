@@ -1,5 +1,3 @@
-
-
 public class Proyecto {
 
  static double costoKilo = 18.00;
