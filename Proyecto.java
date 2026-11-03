@@ -1,9 +1,5 @@
 import java.util.Scanner;
 
-
-
-import java.util.Scanner;
-
 public class Proyecto {
 
     static Scanner sc = new Scanner(System.in);
@@ -79,7 +75,7 @@ public class Proyecto {
              }
         } while (!valido);
         return telefono;
-    }
+    
     }
 
 
