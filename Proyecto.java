@@ -10,23 +10,43 @@ public class Proyecto {
   static double costoPzDelicada = 75.00;
   static double costoEdredonesCobijas = 85.00;
 
-  //Funciones del Menu
+  //Funciones auxiliares
 
-  static void mostrarMenuPrincipal() {
-    System.out.println("1. Registrar Nuevos Clientes");
-    System.out.println("2. Nuevo Pedido");
-    System.out.println("3. Cataalogo de Tarifas y Servicios");
-    System.out.println("4. Consultar Estado de Pedido");
-    System.out.println("5. Salir");
+  static void limpiarConsola() {
+    System.out.print("\033[H\033[2J");
+    System.out.flush();
   }
 
-  static void mostrarMenuClientes() {
+  static void pausar(int ms) {
+    try {
+      Thread.sleep(ms);
+    } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+    }
+  }
+
+  //Funciones del Menu
+
+  static void mostrarMenuPrincipal(boolean hayCliente) {
+    System.out.println(" - B U B B L E S O F T - ");
+    if (hayCliente) {
+      System.out.println(" *Cliente Registrado*");
+    }
+    System.out.println("1. Registrar Nuevo Cliente");
+    System.out.println("2. Nuevo Pedido");
+    System.out.println("3. Catalogo de Tarifas y Servicios");
+    System.out.println("4. Consultar Estado de Pedido");
+    System.out.println("5. Salir");
+    System.out.print("Seleccione una opcion (1-5): ");
+  }
+
+  static void mostrarRegistroClientesNombre() {
     System.out.println("DATOS DEL CLIENTE");
-    System.out.print("Ingrese Nombre: ");
+    System.out.print("Ingrese Nombre (x para cancelar): ");
   }
 
   static void mostrarRegistroClienteTelefono() {
-    System.out.print("Ingrese Numero Telefonico: ");
+    System.out.print("Ingrese Numero Telefonico (0 para cancelar): ");
   }
 
   static void mostrarMenuNuevoPedido(String nombre, String telefono) {
@@ -56,6 +76,62 @@ public class Proyecto {
     System.out.println("3. Por Numero de Telefono");
     System.out.println("4. Salir");
     System.out.println("5. Seleccione una opcion del (1-4):");
+  }
+
+  // funciones de validacion
+
+  static int leerOpcionMenuPrincipal() {
+    int opcion = 0;
+    do {
+      opcion = sc.nextInt();
+      if (opcion < 1 || opcion > 5) {
+        System.out.print("Opcion invalida, intenta de nuevo: ");
+      }
+    } while (opcion < 1 || opcion > 5);
+    return opcion;
+  }
+
+  static int leerOpcionPedido() {
+    int opcion;
+    do {
+      opcion = sc.nextInt();
+      if (opcion < 1 || opcion > 6) {
+        System.out.println("Opcion invalida");
+      }
+    } while (opcion < 1 || opcion > 6);
+    return opcion;
+  }
+
+  static String leerNombreCliente() {
+    String nombre = "";
+    boolean nombreValido = false;
+    do {
+      nombre = sc.nextLine().trim();
+      if (nombre.equalsIgnoreCase("x")) {
+        return "x";
+      } else if (
+        nombre.length() >= 2 && nombre.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+")
+      ) {
+        nombreValido = true;
+      } else {
+        System.out.println(
+          "Error: El nombre debe tener al menos 2 letras y no contener numeros o simbolos."
+        );
+        System.out.print("Intente otra vez: ");
+      }
+    } while (!nombreValido);
+    return nombre;
+  }
+
+  static String leerTelefonoCliente() {
+    String telefono = "";
+    do {
+      telefono = sc.nextLine().trim();
+      if (telefono.length() != 10) {
+        System.out.println("Numero Invalido, intente de nuevo");
+      }
+    } while (telefono.length() != 10);
+    return telefono;
   }
 
   //Funciones de procesos
@@ -120,35 +196,66 @@ public class Proyecto {
   }
 
   public static void main(String[] args) {
-    int opcion;
+    int opcionMenu, opcionPedido;
+    String nombre = "",
+      telefono = "";
+    boolean hayCliente = false;
+
+    limpiarConsola();
 
     do {
-      mostrarMenuPrincipal();
-      System.out.print("Seleccione una opcion (1-5): ");
-      opcion = sc.nextInt();
+      limpiarConsola();
+      mostrarMenuPrincipal(hayCliente);
+      opcionMenu = leerOpcionMenuPrincipal();
       sc.nextLine(); // Limpiar el buffer
 
-      switch (opcion) {
+      switch (opcionMenu) {
         case 1:
-          mostrarMenuClientes();
-          String nombre = sc.nextLine();
+          limpiarConsola();
+          mostrarRegistroClientesNombre();
+          nombre = leerNombreCliente();
+
+          if (nombre.equalsIgnoreCase("x")) {
+            System.out.println("Registro cancelado.");
+            pausar(1000);
+            break; // Sale del switch y regresa al menú principal
+          }
+
           mostrarRegistroClienteTelefono();
-          String telefono = sc.nextLine();
-          System.out.println("¡Cliente registrado con éxito!\n");
+          telefono = leerTelefonoCliente();
+
+          if (telefono.equals("0")) {
+            System.out.println("Registro cancelado.");
+            pausar(1000);
+            break;
+          }
+
+          hayCliente = true;
           break;
         case 2:
-          System.out.println("\n--- NUEVO PEDIDO ---");
-          System.out.print("Ingrese el nombre del cliente: ");
-          String nom = sc.nextLine();
-          System.out.print("Ingrese el teléfono: ");
-          String tel = sc.nextLine();
-          mostrarMenuNuevoPedido(nom, tel);
-          System.out.println();
+          if (hayCliente) {
+            do {
+              limpiarConsola();
+              mostrarMenuNuevoPedido(nombre, telefono);
+              System.out.print("Seleccione una opcion: ");
+              opcionPedido = leerOpcionPedido();
+              switch (opcionPedido) {
+                case 1:
+                  break;
+                default:
+                  break;
+              }
+            } while (opcionPedido != 6);
+          } else {
+            System.out.println("Registra un cliente primero");
+            pausar(1000);
+          }
           break;
         case 3:
-          System.out.println("\n--- CATÁLOGO ---");
+          limpiarConsola();
           mostrarCatalogoServiciosyTarifas();
-          System.out.println();
+          System.out.print("Presione Enter para volver al menú...");
+          sc.nextLine();
           break;
         case 4:
           System.out.println();
@@ -158,8 +265,9 @@ public class Proyecto {
           System.out.println("Saliendo del programa...");
           break;
         default:
-          System.out.println("Opción no válida.\n");
+          //   System.out.println("Opción no válida.");
+          pausar(1000);
       }
-    } while (opcion != 5);
+    } while (opcionMenu != 5);
   }
 }
