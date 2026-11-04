@@ -54,7 +54,9 @@ public class Proyecto {
     System.out.println("DATOS DEL CLIENTE");
     System.out.println("Nombre: " + nombre);
     System.out.println("Telefono: " + telefono);
+    System.out.println("----------------------------------------");
     mostrarCatalogoServiciosyTarifas();
+    System.out.println("6. Terminar pedido y generar ticket");
   }
 
   static void mostrarCatalogoServiciosyTarifas() {
@@ -75,7 +77,73 @@ public class Proyecto {
     System.out.println("2. Por Nombre del Cliente");
     System.out.println("3. Por Numero de Telefono");
     System.out.println("4. Salir");
-    System.out.println("5. Seleccione una opcion del (1-4):");
+    System.out.print("Seleccione una opcion del (1-4): ");
+  }
+
+  static void mostrarTicket(
+    String nombre,
+    String telefono,
+    double peso,
+    int numDocenas,
+    int piezasPlanchado,
+    int piezasDelicadas,
+    int numEdredonesCobijas,
+    double subtotal,
+    double descuento,
+    double iva,
+    double total
+  ) {
+    System.out.println("========================================");
+    System.out.println("       - B U B B L E S O F T -          ");
+    System.out.println("            TICKET DE COMPRA            ");
+    System.out.println("========================================");
+    System.out.println("Cliente: " + nombre);
+    System.out.println("Telefono: " + telefono);
+    System.out.println("----------------------------------------");
+    System.out.println("DETALLE DEL PEDIDO:");
+    if (peso > 0) {
+      System.out.println(
+        "- Lavado por Kilo (" + peso + " kg): $" + (peso * costoKilo)
+      );
+    }
+    if (numDocenas > 0) {
+      System.out.println(
+        "- Lavado por Docena (" +
+          numDocenas +
+          " dz): $" +
+          (numDocenas * costoDocenas)
+      );
+    }
+    if (piezasPlanchado > 0) {
+      System.out.println(
+        "- Planchado Express (" +
+          piezasPlanchado +
+          " pz): $" +
+          (piezasPlanchado * costoPlanchado)
+      );
+    }
+    if (piezasDelicadas > 0) {
+      System.out.println(
+        "- Ropa Delicada (" +
+          piezasDelicadas +
+          " pz): $" +
+          (piezasDelicadas * costoPzDelicada)
+      );
+    }
+    if (numEdredonesCobijas > 0) {
+      System.out.println(
+        "- Edredones/Cobijas (" +
+          numEdredonesCobijas +
+          " pz): $" +
+          (numEdredonesCobijas * costoEdredonesCobijas)
+      );
+    }
+    System.out.println("----------------------------------------");
+    System.out.printf("Subtotal:          $%.2f\n", subtotal);
+    System.out.printf("Descuento (10%%):  -$%.2f\n", descuento);
+    System.out.printf("IVA (16%%):         $%.2f\n", iva);
+    System.out.printf("TOTAL A PAGAR:     $%.2f\n", total);
+    System.out.println("========================================");
   }
 
   // funciones de validacion
@@ -99,6 +167,17 @@ public class Proyecto {
         System.out.println("Opcion invalida");
       }
     } while (opcion < 1 || opcion > 6);
+    return opcion;
+  }
+
+  static int leerOpcionConsulta() {
+    int opcion;
+    do {
+      opcion = sc.nextInt();
+      if (opcion < 1 || opcion > 4) {
+        System.out.print("Opcion invalida, intenta de nuevo: ");
+      }
+    } while (opcion < 1 || opcion > 4);
     return opcion;
   }
 
@@ -127,6 +206,9 @@ public class Proyecto {
     String telefono = "";
     do {
       telefono = sc.nextLine().trim();
+      if (telefono.equals("0")) {
+        return "0";
+      }
       if (telefono.length() != 10) {
         System.out.println("Numero Invalido, intente de nuevo");
       }
@@ -196,10 +278,22 @@ public class Proyecto {
   }
 
   public static void main(String[] args) {
-    int opcionMenu, opcionPedido;
+    int opcionMenu, opcionPedido, opcionConsulta;
     String nombre = "",
       telefono = "";
     boolean hayCliente = false;
+    boolean hayPedido = false;
+
+    // Variables del pedido y totales
+    double peso = 0;
+    int numDocenas = 0;
+    int piezasPlanchado = 0;
+    int piezasDelicadas = 0;
+    int numEdredonesCobijas = 0;
+    double subtotal = 0,
+      descuento = 0,
+      iva = 0,
+      total = 0;
 
     limpiarConsola();
 
@@ -231,16 +325,97 @@ public class Proyecto {
           }
 
           hayCliente = true;
+          hayPedido = false; // Reiniciar estado de pedido para nuevo cliente
           break;
         case 2:
           if (hayCliente) {
+            // Reiniciar contadores para el carrito actual
+            peso = 0;
+            numDocenas = 0;
+            piezasPlanchado = 0;
+            piezasDelicadas = 0;
+            numEdredonesCobijas = 0;
+
             do {
               limpiarConsola();
               mostrarMenuNuevoPedido(nombre, telefono);
-              System.out.print("Seleccione una opcion: ");
+              System.out.print("Seleccione una opcion (1-6): ");
               opcionPedido = leerOpcionPedido();
+
               switch (opcionPedido) {
                 case 1:
+                  System.out.print("Ingrese los kilos de ropa: ");
+                  peso += sc.nextDouble();
+                  System.out.println("Agregado al carrito.");
+                  pausar(800);
+                  break;
+                case 2:
+                  System.out.print("Ingrese el numero de docenas: ");
+                  numDocenas += sc.nextInt();
+                  System.out.println("Agregado al carrito.");
+                  pausar(800);
+                  break;
+                case 3:
+                  System.out.print(
+                    "Ingrese el numero de piezas para planchado: "
+                  );
+                  piezasPlanchado += sc.nextInt();
+                  System.out.println("Agregado al carrito.");
+                  pausar(800);
+                  break;
+                case 4:
+                  System.out.print("Ingrese el numero de piezas delicadas: ");
+                  piezasDelicadas += sc.nextInt();
+                  System.out.println("Agregado al carrito.");
+                  pausar(800);
+                  break;
+                case 5:
+                  System.out.print("Ingrese el numero de edredones/cobijas: ");
+                  numEdredonesCobijas += sc.nextInt();
+                  System.out.println("Agregado al carrito.");
+                  pausar(800);
+                  break;
+                case 6:
+                  sc.nextLine(); // Limpiar el buffer
+                  subtotal = calcularSubtotalInicial(
+                    peso,
+                    numDocenas,
+                    piezasPlanchado,
+                    piezasDelicadas,
+                    numEdredonesCobijas
+                  );
+
+                  if (subtotal > 0) {
+                    System.out.print("¿Cuenta con cupon de descuento? (s/n): ");
+                    String respCupon = sc.nextLine().trim();
+                    boolean tieneCupon = respCupon.equalsIgnoreCase("s");
+
+                    descuento = calcularDescuento(subtotal, tieneCupon);
+                    double subtotalConDescuento = subtotal - descuento;
+                    iva = calcularIva(subtotalConDescuento);
+                    total = subtotalConDescuento + iva;
+                    hayPedido = true;
+
+                    limpiarConsola();
+                    mostrarTicket(
+                      nombre,
+                      telefono,
+                      peso,
+                      numDocenas,
+                      piezasPlanchado,
+                      piezasDelicadas,
+                      numEdredonesCobijas,
+                      subtotal,
+                      descuento,
+                      iva,
+                      total
+                    );
+                    System.out.print("Presione Enter para volver al menú...");
+                    sc.nextLine();
+                  } else {
+                    System.out.println("No se agregaron servicios al pedido.");
+                    pausar(1000);
+                  }
                   break;
                 default:
                   break;
@@ -258,15 +433,93 @@ public class Proyecto {
           sc.nextLine();
           break;
         case 4:
-          System.out.println();
-          mostrarMenuConsulta();
+          do {
+            limpiarConsola();
+            mostrarMenuConsulta();
+            opcionConsulta = leerOpcionConsulta();
+            sc.nextLine(); // Limpiar el buffer
+
+            switch (opcionConsulta) {
+              case 1:
+                System.out.println("Consulta por folio pendiente...");
+                pausar(1000);
+                break;
+              case 2:
+                limpiarConsola();
+                System.out.println("CONSULTA POR NOMBRE");
+                System.out.print(
+                  "Ingrese Nombre del Cliente (x para cancelar): "
+                );
+                String nombreBuscar = leerNombreCliente();
+
+                if (nombreBuscar.equalsIgnoreCase("x")) {
+                  break;
+                }
+
+                if (hayCliente && nombreBuscar.equalsIgnoreCase(nombre)) {
+                  System.out.println("--- CLIENTE ENCONTRADO ---");
+                  System.out.println("Nombre: " + nombre);
+                  System.out.println("Telefono: " + telefono);
+                  if (hayPedido) {
+                    System.out.println("Estado del pedido: En proceso");
+                    System.out.printf("Total a pagar: $%.2f", total);
+                  } else {
+                    System.out.println(
+                      "Estado del pedido: Sin pedidos registrados."
+                    );
+                  }
+                } else {
+                  System.out.println(
+                    "No se encontro ningun cliente con ese nombre."
+                  );
+                }
+                System.out.print("\nPresione Enter para continuar...");
+                sc.nextLine();
+                break;
+              case 3:
+                limpiarConsola();
+                System.out.println("CONSULTA POR TELEFONO");
+                System.out.print(
+                  "Ingrese Numero Telefonico (0 para cancelar): "
+                );
+                String telefonoBuscar = leerTelefonoCliente();
+
+                if (telefonoBuscar.equals("0")) {
+                  break;
+                }
+
+                if (hayCliente && telefonoBuscar.equals(telefono)) {
+                  System.out.println("\n--- CLIENTE ENCONTRADO ---");
+                  System.out.println("Nombre: " + nombre);
+                  System.out.println("Telefono: " + telefono);
+                  if (hayPedido) {
+                    System.out.println("Estado del pedido: En proceso");
+                    System.out.printf("Total a pagar: $%.2f\n", total);
+                  } else {
+                    System.out.println(
+                      "Estado del pedido: Sin pedidos registrados."
+                    );
+                  }
+                } else {
+                  System.out.println(
+                    "No se encontro ningun cliente con ese telefono."
+                  );
+                }
+                System.out.print("\nPresione Enter para continuar...");
+                sc.nextLine();
+                break;
+              case 4:
+                System.out.println("Regresando al menu principal...");
+                pausar(800);
+                break;
+              default:
+                break;
+            }
+          } while (opcionConsulta != 4);
           break;
         case 5:
           System.out.println("Saliendo del programa...");
           break;
-        default:
-          //   System.out.println("Opción no válida.");
-          pausar(1000);
       }
     } while (opcionMenu != 5);
   }
