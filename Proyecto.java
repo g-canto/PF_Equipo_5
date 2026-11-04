@@ -11,20 +11,20 @@ public class Proyecto {
         System.out.println("4.Consultar Estado de Pedido");
         System.out.println("5.Salir");
       }
-      static void mostrarMenuClientes() {
+        static void mostrarMenuClientes() {
         System.out.println("1. Datos del Cliente");
         System.out.print("2.Ingrese Nombre");
         
       }
 
-      static void mostrarRegistroClienteTelefono() {
-       System.out.println("DATOS DEL CLIENTE");
+        static void mostrarRegistroClienteTelefono() {
+       System.out.println(" DATOS DEL CLIENTE ");
        System.out.print("Ingrese Numero Telefonico:");
       
       }
       
       static void mostrarMenuNuevoPedido(String nombre, String telefono) {
-      System.out.println("Registro de Nuevo Pedido");
+      System.out.println("  Registro de Nuevo Pedido ");
       System.out.println("DATOS DEL CLIENTE");
       System.out.println("Nombre: " + nombre);
       System.out.println("Telefono: " + telefono);
@@ -43,7 +43,7 @@ public class Proyecto {
       }
      
       static void mostrarMenuConsulta() {
-        System.out.println("Consultar estado de pedido");
+        System.out.println(" Consultar estado de pedido por:");
         System.out.println("1. Por folio de consulta");
         System.out.println("2. Por Nombre del Cliente");
         System.out.println("3. Por Numero de Telefono");
