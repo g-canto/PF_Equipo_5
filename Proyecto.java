@@ -30,7 +30,7 @@ public class Proyecto {
   static void mostrarMenuPrincipal(boolean hayCliente) {
     System.out.println(" - B U B B L E S O F T - ");
     if (hayCliente) {
-      System.out.println(" *Cliente Registrado*");
+      System.out.println(" *Cliente Registrado* ");
     }
     System.out.println("1. Registrar Nuevo Cliente");
     System.out.println("2. Nuevo Pedido");
@@ -41,17 +41,17 @@ public class Proyecto {
   }
 
   static void mostrarRegistroClientesNombre() {
-    System.out.println("DATOS DEL CLIENTE");
-    System.out.print("Ingrese Nombre (x para cancelar): ");
+    System.out.println(" DATOS DEL CLIENTE ");
+    System.out.print(" Ingrese Nombre (x para cancelar): ");
   }
 
   static void mostrarRegistroClienteTelefono() {
-    System.out.print("Ingrese Numero Telefonico (0 para cancelar): ");
+    System.out.print(" Ingrese Numero Telefonico (0 para cancelar): ");
   }
 
   static void mostrarMenuNuevoPedido(String nombre, String telefono) {
-    System.out.println("Registro de Nuevo Pedido");
-    System.out.println("DATOS DEL CLIENTE");
+    System.out.println("   Registro de Nuevo Pedido  ");
+    System.out.println(" DATOS DEL CLIENTE ");
     System.out.println("Nombre: " + nombre);
     System.out.println("Telefono: " + telefono);
     System.out.println("----------------------------------------");
@@ -72,7 +72,7 @@ public class Proyecto {
   }
 
   static void mostrarMenuConsulta() {
-    System.out.println("Consultar estado de pedido");
+    System.out.println("      Consultar estado de pedido  ");
     System.out.println("1. Por folio de consulta");
     System.out.println("2. Por Nombre del Cliente");
     System.out.println("3. Por Numero de Telefono");
